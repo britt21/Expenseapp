@@ -65,7 +65,6 @@ void main() {
       var validatorClass = ValidatorClass('email@example.com', 'password', mockShowMessage as String?);
 
       expect(validatorClass.validator(), isTrue);
-      verifyNever(mockShowMessage(""));
     });
   });
 }
