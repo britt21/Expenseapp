@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "784232395119",
+    "project_id": "myexense",
+    "storage_bucket": "myexense.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784232395119:android:89a763de3fe320cfe5789a",
+        "android_client_info": {
+          "package_name": "com.example.myexpense.myexpense"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBr8h0W1w9hqgpS_aBkknxpugj5LuAm878"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
