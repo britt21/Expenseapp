@@ -7,6 +7,7 @@ import 'package:myexpense/utils/apptexts.dart';
 
 import '../assets/img/pngs.dart';
 import '../colors/colors.dart';
+import '../service/user_service.dart';
 
 class Homemain extends StatefulWidget {
   @override
@@ -15,6 +16,33 @@ class Homemain extends StatefulWidget {
 
 class _HomemainState extends State<Homemain> {
   var names = ["Youtube","Netflix","Paypal"];
+
+  var userservice = UserService();
+
+  List<Item> allitems = [];
+
+  @override
+  void initState()  {
+    super.initState();
+    _fetchItems();
+
+  }
+
+  Future<void> _fetchItems() async {
+    try {
+      ItemDocument response = await userservice.getItems();
+      var data = response.items;
+      if (data.isNotEmpty) {
+        setState(() {
+          allitems = data;
+          print("FONDITEM:: $allitems"); // Print the items list
+        });
+      }
+    } catch (e) {
+      print("Error fetching items: $e");
+      // Handle the error
+    }
+  }
 
 
   @override
@@ -151,9 +179,12 @@ class _HomemainState extends State<Homemain> {
                 height: 350,
                 child: ListView.builder(
                   padding: EdgeInsets.only(top: 0), // Remove default padding from ListView
-                  itemCount: 15,
+                  itemCount: allitems.length,
                   itemBuilder: (context, index) {
-                    return expenseitem("Paypal", upw);
+                    print("ALL_IMAGE_NOW: "+allitems[index].image);
+                    print("ALL_IMAGE_NOW: "+allitems[index].image);
+
+                    return expenseitem("${allitems[index].name}", "${allitems[index].image}");
                   },
                 ),
               ),
