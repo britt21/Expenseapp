@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myexpense/assets/img/pngs.dart';
 import 'package:myexpense/assets/svgs/svg.dart';
 import 'package:myexpense/images.dart';
+import 'package:myexpense/service/user_service.dart';
 
 import '../colors/colors.dart';
 import '../data/utls/utils.dart';
@@ -20,6 +21,7 @@ class _HomeState extends State<Addexpense> {
   String selectedValue = "Netflix";
   final FocusNode _focusNode = FocusNode();
 
+var userservice = UserService();
 
   final List<Map<String, String>> items = [
     {"name": "Netflix", "image": "${nf}"},
@@ -193,7 +195,17 @@ class _HomeState extends State<Addexpense> {
                   ),
 
                         sh20(),
-                        appbutton("Record")
+                        GestureDetector(
+                          onTap: () async {
+                            var result = await userservice.addItem(items);
+
+                            if(result.result!.isNotEmpty){
+                              print("esobar"+ result.result.toString());
+                              Navigator.pop(context);
+                            }
+                          },
+
+                            child: appbutton("Record"))
                   ]
 
                 ),

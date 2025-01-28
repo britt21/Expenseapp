@@ -47,4 +47,43 @@ class UserService extends GetxController {
     }
     return completer.future;
   }
+
+  Future<ResultHelper> addItem(List<Map<String, dynamic>> items) async {
+    var completer = Completer<ResultHelper>();
+
+    // Ensure the user is authenticated
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      print('User is not authenticated');
+      completer.complete(ResultHelper(
+          result: null, errorMessage: "User is not authenticated"));
+      return completer.future;
+    }
+
+    // Reference to the Firestore collection
+    CollectionReference collection = FirebaseFirestore.instance.collection("ITEMS");
+
+    // Document data to be added
+    Map<String, dynamic> documentData = {
+      'items': items, // List of maps with name and amount
+      'userId': user.uid,
+      'timestamp': FieldValue.serverTimestamp(),
+    };
+
+    try {
+      await collection.add(documentData);
+      print('Document added successfully');
+
+      completer.complete(ResultHelper(
+          result: "Document added successfully", errorMessage: null));
+    } catch (e) {
+      print('Error adding document: $e');
+      completer.complete(ResultHelper(
+          result: null, errorMessage: "Error adding document: $e"));
+    }
+
+    return completer.future;
+  }
+
 }
