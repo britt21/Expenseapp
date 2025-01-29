@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:myexpense/assets/img/pngs.dart';
 import 'package:myexpense/assets/svgs/svg.dart';
 import 'package:myexpense/images.dart';
+import 'package:myexpense/service/user_service.dart';
 
 import '../colors/colors.dart';
 import '../data/utls/utils.dart';
 import '../utils/apptexts.dart';
+import '../utils/snackbar.dart';
 
 class Addexpense extends StatefulWidget {
   const Addexpense({super.key});
@@ -19,13 +21,32 @@ class _HomeState extends State<Addexpense> {
 
   String selectedValue = "Netflix";
   final FocusNode _focusNode = FocusNode();
+  var amountet = TextEditingController();
+
+var userservice = UserService();
+
+  List<Map<String, String>> items = [];
+
+  @override
+  void initState() {
+    super.initState();
+    amountet = TextEditingController(); // Initialize amountet in initState
+    _initializeItems(); // Call _initializeItems to populate the list
+  }
+
+  void _initializeItems() {
+    setState(() {
+      items = [
+        {
+          "name": "Netflix",
+          "image": "${nf}",
+          "amount": "${amountet.text}" // Access amountet.text here
+        }
+      ];
+    });
+  }
 
 
-  final List<Map<String, String>> items = [
-    {"name": "Netflix", "image": "${nf}"},
-    {"name": "Youtube", "image": "${yt}"},
-    {"name": "Paypal", "image": "${ppl}"},
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -169,8 +190,8 @@ class _HomeState extends State<Addexpense> {
 
                   sh10(),
                   TextField(
+                    controller: amountet,
                   keyboardType: TextInputType.number,
-
                       focusNode: _focusNode,
                       decoration: InputDecoration(
                         labelText: "\$0.0",
@@ -193,7 +214,19 @@ class _HomeState extends State<Addexpense> {
                   ),
 
                         sh20(),
-                        appbutton("Record")
+                        GestureDetector(
+                          onTap: () async {
+                            var result = await userservice.addItem(items);
+
+                            if(result.result!.isNotEmpty){
+                              print("esobar"+ result.result.toString());
+                              showtopmessage(context, "added successfully");
+                              Navigator.pop(context);
+
+                            }
+                          },
+
+                            child: appbutton("Record"))
                   ]
 
                 ),
